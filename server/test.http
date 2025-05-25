@@ -1,0 +1,90 @@
+# Authentication Routes
+### Register a new user
+POST http://localhost:5000/api/auth/register
+Content-Type: application/json
+
+{
+  "name": "Test User",
+  "email": "test@example.com",
+  "password": "password123"
+}
+
+### Login
+POST http://localhost:5000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "password123"
+}
+
+### Logout (requires auth token)
+POST http://localhost:5000/api/auth/logout
+Authorization: Bearer YOUR_TOKEN_HERE
+
+# Chat Routes
+### Get all chats
+GET http://localhost:5000/api/chats
+Authorization: Bearer YOUR_TOKEN_HERE
+
+### Create private chat
+POST http://localhost:5000/api/chats/private
+Authorization: Bearer YOUR_TOKEN_HERE
+Content-Type: application/json
+
+{
+  "recipientId": "RECIPIENT_USER_ID"
+}
+
+### Create group chat
+POST http://localhost:5000/api/chats/group
+Authorization: Bearer YOUR_TOKEN_HERE
+Content-Type: application/json
+
+{
+  "name": "Test Group",
+  "participants": ["USER_ID_1", "USER_ID_2"]
+}
+
+### Get chat by ID
+GET http://localhost:5000/api/chats/CHAT_ID
+Authorization: Bearer YOUR_TOKEN_HERE
+
+# Message Routes
+### Get messages for a chat
+GET http://localhost:5000/api/messages/CHAT_ID?page=1&limit=50
+Authorization: Bearer YOUR_TOKEN_HERE
+
+### Send text message
+POST http://localhost:5000/api/messages/CHAT_ID
+Authorization: Bearer YOUR_TOKEN_HERE
+Content-Type: application/json
+
+{
+  "content": "Hello, this is a test message!"
+}
+
+### Send file message (use multipart/form-data in actual client)
+POST http://localhost:5000/api/messages/CHAT_ID
+Authorization: Bearer YOUR_TOKEN_HERE
+Content-Type: multipart/form-data
+
+### Delete message
+DELETE http://localhost:5000/api/messages/MESSAGE_ID
+Authorization: Bearer YOUR_TOKEN_HERE
+
+# WebSocket Testing
+# Use a WebSocket client to test these events:
+# 1. Connect with token in auth:
+#    ws://localhost:5000
+#    Headers: { "Authorization": "Bearer YOUR_TOKEN_HERE" }
+#
+# 2. Listen for events:
+#    - user:status
+#    - message:receive
+#    - typing:update
+#
+# 3. Emit events:
+#    - message:send
+#    - typing:start
+#    - typing:stop
